@@ -1,0 +1,8 @@
+__pycache__
+   *.pyc
+   .git
+   venv/
+   .venv/
+   .env
+   node_modules/
+   docs/_build/

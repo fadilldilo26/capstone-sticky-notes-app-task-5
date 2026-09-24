@@ -1,24 +1,23 @@
-# Use official Python image as base
-FROM python:3.12-slim
+FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+    ENV PYTHONDONTWRITEBYTECODE=1
+    ENV PYTHONUNBUFFERED=1
 
-# Set working directory
-WORKDIR /app
+    WORKDIR /app
 
-# Copy requirements first (for better caching)
-COPY requirements.txt /app/
+    # Reviewer Requirement: mysqlclient system packages
+    RUN apt-get update && apt-get install -y \
+        default-libmysqlclient-dev \
+        build-essential \
+        pkg-config \
+        && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+    COPY requirements.txt .
+    RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
-COPY . /app/
+    COPY . .
 
-# Expose port 8000 for Django
-EXPOSE 8000
+    EXPOSE 8000
 
-# Command to run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    # Since manage.py is at root, this is correct:
+    CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
