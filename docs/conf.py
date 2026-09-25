@@ -8,17 +8,17 @@ import sys
 import django
 
 # ---------------------------------------------------------------------------
-# CRITICAL FIX 1: Add the project root to the Python path
-# Since conf.py is inside 'docs/', we need to go up one level ('..') 
-# so Python can find the 'sticky_notes' folder.
+# CRITICAL FIX: Use ABSOLUTE PATH to project root
+# This guarantees Python can find 'sticky_notes' regardless of 
+# where Sphinx runs from.
 # ---------------------------------------------------------------------------
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, r'C:\Users\DiLo\Desktop\capstone-sticky-notes-app')
+sys.path.insert(0, r'C:\Users\DiLo\Desktop\capstone-sticky-notes-app\sticky_notes')
 
 # ---------------------------------------------------------------------------
-# CRITICAL FIX 2: Initialize Django properly
-# This allows Sphinx to import your models and understand your database schema.
+# Django Setup
 # ---------------------------------------------------------------------------
-os.environ['DJANGO_SETTINGS_MODULE'] = 'sticky_notes.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stickynotes.settings')
 django.setup()
 
 # -- Project information -----------------------------------------------------
@@ -32,12 +32,6 @@ release = '1.0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-# ---------------------------------------------------------------------------
-# CRITICAL FIX 3: Enable extensions to actually generate docs from code
-# autodoc: pulls docstrings from your Python files
-# viewcode: adds links to source code
-# napoleon: allows Google-style docstrings (easier to read/write)
-# ---------------------------------------------------------------------------
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
